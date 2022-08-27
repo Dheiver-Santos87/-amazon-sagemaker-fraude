@@ -1,149 +1,132 @@
-# Architect and Build an End-to-End Workflow for Auto Claim Fraud Detection with SageMaker Services
+# Arquitete e crie um fluxo de trabalho de ponta a ponta para detecção  de fraudes com os serviços SageMaker.
 
-The purpose of this end-to-end example is to demonstrate how to prepare, train, and deploy a model that detects auto insurance claims.
+O objetivo deste exemplo Endtoend é demonstrar como preparar, treinar e implantar um modelo que detecta falhas em seguros de automóveis.
 
-## Contents
-1. [Business Problem](#business-problem)
-2. [Technical Solution](#nb0-solution)
-3. [Solution Components](#nb0-components)
-4. [Solution Architecture](#nb0-architecture)
-5. [Code Resources](#nb0-code)
-6. [Exploratory Data Science and Operational ML workflows](#nb0-workflows)
-7. [The ML Life Cycle: Detailed View](#nb0-ml-lifecycle)
+## Conteúdo
+1. [Problema de negócios](#business-problem)
+2. [Solução Técnica](#nb0-solution)
+3. [Componentes da solução](#nb0-components)
+4. [Arquitetura da solução](#nb0-arquitetura)
+5. [Recursos de código](#nb0-code)
+6. [Fluxos de trabalho exploratórios de ciência de dados e ML operacional](#nb0-workflows)
+7. [Ciclo de vida do modelo de ML: visão detalhada](#nb0-ml-lifecycle)
 
 
 <a id ='business-problem'> </a>
 
-## Business Problem
+## Problema de negócios
 
-<i> "Auto insurance fraud ranges from misrepresenting facts on insurance applications and inflating insurance claims to staging accidents and submitting claim forms for injuries or damage that never occurred, to false reports of stolen vehicles.
-Fraud accounted for between 15 percent and 17 percent of total claims payments for auto insurance bodily injury in 2012, according to an Insurance Research Council (IRC) study. The study estimated that between \$5.6 billion and \$7.7 billion was fraudulently added to paid claims for auto insurance bodily injury payments in 2012, compared with a range of \$4.3 billion to \$5.8 billion in 2002. </i>" [source: Insurance Information Institute](https://www.iii.org/article/background-on-insurance-fraud)
+<i> "A fraude de seguros de automóveis varia entre depurar fatos em solicitações de seguros, inflar reivindicações de seguros, encenar acidentes e enviar formulários de indenização por lesões ou danos que nunca ocorreram, ou relatórios falsos de veículos roubados.
+A fraude representou entre 15% e 17% do total de pagamentos por danos corporais em 2012, de acordo com um estudo do Insurance Research Council (IRC). O estudo estimou que entre $ 5,6 bilhões e $ 7,7 bilhões foram adicionados de forma fraudulenta aos pedidos de indenização por danos em 2012, em comparação com um intervalo de $ 4,3 bilhões a $ 5,8 bilhões em 2002. </i>" [fonte: Instituto de Informações de Seguros](https://www.iii.org/article/background-on-insurance-fraud)
 
-In this example, we will use an *auto insurance domain* to detect claims that are possibly fraudulent.  
-more precisely we address the use-case: <i> "what is the likelihood that a given auto claim is fraudulent?" </i>, and explore the technical solution.  
+Neste exemplo, usaremos um *domínio de seguro automóvel* para detectar contratos fraudulentos.
+mais precisamente, abordamos o caso de uso: <i> "qual é a probabilidade de uma determinada reivindicação de automóvel ser fraudulenta?" </i> e explore a solução técnica.
 
-As you review the notebooks and the [architectures](#nb0-architecture) presented at each stage of the ML life cycle, you will see how you can leverage SageMaker services and features to enhance your effectiveness as a data scientist, as a machine learning engineer, and as an ML Ops Engineer.
+Ao revisar os notebooks e as [arquiteturas](#nb0-architecture) apresentadas em cada estágio do ciclo de vida de ML, você verá como pode aproveitar os serviços e recursos do SageMaker para aprimorar sua eficácia como cientista de dados e como e como engenheiro de operações de ML.
 
-We then perform data exploration on the synthetically generated datasets for Customers and Claims.
+Em seguida, realizamos a exploração de dados nos conjuntos de dados gerados sinteticamente em relação à Clientes e Reclamações.
 
-Then, we provide an overview of the technical solution by examining the [Solution Components](#nb0-components) and the [Solution Architecture](#nb0-architecture).
-We are motivated by the need to accomplish new tasks in ML by examining a [detailed view of the Machine Learning Lifecycle](#nb0-ml-lifecycle), recognizing the [separation of exploratory data science and operationalizing an ML worklfow](#nb0-workflows).
+Em seguida, fornecemos uma visão geral da solução técnica examinando os [Componentes da solução](#nb0-components) e a [Arquitetura da solução](#nb0-architecture).
+Somos motivados pela necessidade de realizar novas tarefas em ML examinando uma [visão detalhada do Ciclo de Vida de Aprendizado de Máquina](#nb0-ml-lifecycle), reconhecendo à [separação da ciência de dados exploratória e operacionalizando de um fluxo de trabalho de ML](#nb0 -fluxos de trabalho).
 
-### Car Insurance Claims: Data Sets and Problem Domain
+### Reclamações de seguro automóvel: conjuntos de dados e domínio do problema
 
-The inputs for building our model and workflow are two tables of insurance data: a claims table and a customers table. This data was synthetically generated is provided to you in its raw state for pre-processing with SageMaker Data Wrangler. However, completing the SageMaker Data Wrangler step is not required to continue with the rest of this notebook. If you wish, you may use the `claims_preprocessed.csv` and `customers_preprocessed.csv` in the `data` directory as they are exact copies of what SageMaker Data Wrangler would output.
-
-
+As entradas para construir nosso modelo e fluxo de trabalho são duas tabelas de dados de seguros: uma tabela de acidentes e uma tabela de clientes. Esses dados foram gerados sinteticamente e são fornecidos a você em seu estado bruto para pré-processamento com o SageMaker Data Wrangler. No entanto, não é necessário concluir a etapa do SageMaker Data Wrangler para continuar com o restante deste notebook. Se desejar, você pode usar `claims_preprocessed.csv` e `customers_preprocessed.csv` no diretório `data`, pois são cópias exatas do que o SageMaker Data Wrangler produziria.
 
 <a id ='nb0-solution'> </a>
 
-## Technical Solution
+## Solução técnica
 
-In this introduction, you will look at the technical architecture and solution components to build a solution for predicting fraudulent insurance claims and deploy it using SageMaker for real-time predictions. While a deployed model is the end-product of this notebook series, the purpose of this guide is to walk you through all the detailed stages of the [machine learning (ML) lifecycle](#ml-lifecycle) and show you what SageMaker services and features are there to support your activities in each stage.
-
-
+Nesta introdução, você examinará a arquitetura técnica e os componentes da solução para criar uma solução para prever fraudes em acidentes  e implantá-la usando o SageMaker para previsões em tempo real. Embora um modelo implantado seja o produto final desta série de notebooks, o objetivo deste guia é orientá-lo em todos os estágios detalhados do [ciclo de vida de aprendizado de máquina (ML)](#ml-lifecycle) e mostrar quais serviços do SageMaker e os recursos estão lá para apoiar suas atividades em cada estágio.
 
 <a id ='nb0-components'> </a>
 
-## Solution Components
-    
-The following [SageMaker](https://sagemaker.readthedocs.io/en/stable/v2.html) Services are used in this solution:
+## Componentes da solução
 
- 1. [SageMaker DataWrangler](https://aws.amazon.com/sagemaker/data-wrangler/) - [docs](https://docs.aws.amazon.com/sagemaker/latest/dg/data-wrangler.html)
- 1. [SageMaker Processing](https://aws.amazon.com/blogs/aws/amazon-sagemaker-processing-fully-managed-data-processing-and-model-evaluation/) - [docs](https://sagemaker.readthedocs.io/en/stable/amazon_sagemaker_processing.html)
+Os seguintes serviços [SageMaker](https://sagemaker.readthedocs.io/en/stable/v2.html) são usados ​​nesta solução:
+
+ 1. [SageMaker DataWrangler](https://aws.amazon.com/sagemaker/data-wrangler/) - [docs](https://docs.aws.amazon.com/sagemaker/latest/dg/data-wrangler .html)
+ 1. [SageMaker Processing](https://aws.amazon.com/blogs/aws/amazon-sagemaker-processing-full-managed-data-processing-and-model-evaluation/) - [docs](https:/ /sagemaker.readthedocs.io/en/stable/amazon_sagemaker_processing.html)
  1. [SageMaker Feature Store](https://aws.amazon.com/sagemaker/feature-store/)- [docs](https://sagemaker.readthedocs.io/en/stable/amazon_sagemaker_featurestore.html)
- 1. [SageMaker Clarify](https://aws.amazon.com/sagemaker/clarify/)- [docs](https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-processing-job-run.html)
- 1. [SageMaker Training with XGBoost Algorithm and Hyperparameter Optimization](https://sagemaker.readthedocs.io/en/stable/frameworks/xgboost/using_xgboost.html)- [docs](https://sagemaker.readthedocs.io/en/stable/frameworks/xgboost/index.html)
- 1. [SageMaker Model Registry](https://docs.aws.amazon.com/sagemaker/latest/dg/model-registry.html)- [docs](https://docs.aws.amazon.com/sagemaker/latest/dg/model-registry-deploy.html#model-registry-deploy-api)
- 1. [SageMaker Hosted Endpoints]()- [predictors - docs](https://sagemaker.readthedocs.io/en/stable/api/inference/predictors.html)
+ 1. [SageMaker Clarify](https://aws.amazon.com/sagemaker/clarify/)- [docs](https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-processing-job -run.html)
+ 1. [Treinamento do SageMaker com algoritmo XGBoost e otimização de hiperparâmetros](https://sagemaker.readthedocs.io/en/stable/frameworks/xgboost/using_xgboost.html)- [docs](https://sagemaker.readthedocs.io/ pt/stable/frameworks/xgboost/index.html)
+ 1. [SageMaker Model Registry](https://docs.aws.amazon.com/sagemaker/latest/dg/model-registry.html)- [docs](https://docs.aws.amazon.com/sagemaker /latest/dg/model-registry-deploy.html#model-registry-deploy-api)
+ 1. [Pontos de extremidade hospedados do SageMaker]()- [preditores - docs](https://sagemaker.readthedocs.io/en/stable/api/inference/predictors.html)
  1. [SageMaker Pipelines]()- [docs](https://sagemaker.readthedocs.io/en/stable/workflows/pipelines/index.html)
  
-![Solution Components](images/solution-components-e2e.png)
-
-
+![Componentes da solução](images/solution-components-e2e.png)
 
 <a id ='nb0-architecture'> </a>
 
-## Solution Architecture
+## Arquitetura de soluções
 
-The overall architecture is shown in the diagram below.
-1[end to end](./images/ML-Lifecycle-v5.png)
+A arquitetura geral é mostrada no diagrama abaixo.
+1[de ponta a ponta](./images/ML-Lifecycle-v5.png)
 
-We will go through 5 stages of ML and explore the solution architecture of SageMaker. Each of the sequancial notebooks will dive deep into corresponding ML stage.
+Passaremos por 5 etapas do ML e exploraremos a arquitetura da solução do SageMaker. Cada um dos cadernos sequenciais mergulhará profundamente no estágio de ML correspondente.
 
-### [Notebook 1](./0-AutoClaimFraudDetection.ipynb): Data Exploration
+### [Notebook 1](./0-AutoClaimFraudDetection.ipynb): Exploração de dados
 
-### [Notebook 2](./1-data-prep-e2e.ipynb): Data Preparation, Ingest, Transform, Preprocess, and Store in SageMaker Feature Store
+### [Caderno 2](./1-data-prep-e2e.ipynb): Preparação de dados, ingestão, transformação, pré-processamento e armazenamento no SageMaker Feature Store
 
-![Solution Architecture](images/e2e-1-pipeline-v3b.png)
+![Arquitetura da solução](images/e2e-1-pipeline-v3b.png)
 
-### [Notebook 3](./2-lineage-train-assess-bias-tune-registry-e2e.ipynb) and [Notebook 4](./3-mitigate-bias-train-model2-registry-e2e.ipynb) : Train, Tune, Check Pre- and Post-Training Bias, Mitigate Bias, Re-train, Deposit, and Deploy the Best Model to SageMaker Model Registry
+### [Notebook 3](./2-lineage-train-assess-bias-tune-registry-e2e.ipynb) e [Notebook 4](./3-mitigate-bias-train-model2-registry-e2e. ipynb): Treinar, Ajustar, Verificar Preconceito e Pós-Treinamento, Mitigar Viés, Retreinar, Depositar e Implantar o Melhor Modelo no Registro de Modelos do SageMaker
 
-![Solution Architecture](images/e2e-2-pipeline-v3b.png)
+![Arquitetura da solução](images/e2e-2-pipeline-v3b.png)
 
-This is the architecture for model deployment.
+Essa é a arquitetura para implantação de modelo.
 
-![Solution Architecture](images/e2e-3-pipeline-v3b.png)
+![Arquitetura da solução](images/e2e-3-pipeline-v3b.png)
 
-### [Pipeline Notebook](./pipeline-e2e.ipynb): End-to-End Pipeline - MLOps Pipeline to run an end-to-end automated workflow with all the design decisions made during manual/exploratory steps in previous notebooks.
+### [Pipeline Notebook](./pipeline-e2e.ipynb): End-to-End Pipeline - MLOps Pipeline para executar um fluxo de trabalho automatizado de ponta a ponta com todas as decisões de design feitas durante as etapas manuais/exploratórias em notebooks anteriores .
 
-![Pipelines Solution Architecture](images/e2e-5-pipeline-v3b.png)
-
-
+![Arquitetura de solução de pipelines](images/e2e-5-pipeline-v3b.png)
 
 <a id ='nb0-code'> </a>
 
-## Code Resources
+## Recursos de código
 
-### Stages
+### Estágios
 
-Our solution is split into the following stages of the [ML Lifecycle](#nb0-ml-lifecycle), and each stage has its own notebook:
+Nossa solução é dividida nos seguintes estágios do [ML Lifecycle](#nb0-ml-lifecycle), e cada estágio tem seu próprio notebook:
 
-* [Notebook 1: Data Exploration](./0-AutoClaimFraudDetection.ipynb): We first explore the data.
-* [Notebook 2: Data Prep and Store](./1-data-prep-e2e.ipynb): We prepare a dataset for machine learning using SageMaker Data Wrangler, create and deposit the datasets in a SageMaker Feature Store.
-* [Notebook 3: Train, Assess Bias, Establish Lineage, Register Model](./2-lineage-train-assess-bias-tune-registry-e2e.ipynb): We detect possible pre-training and post-training bias, train and tune a XGBoost model using Amazon SageMaker, record Lineage in the Model Registry so we can later deploy it. 
-* [Notebook 4: Mitigate Bias, Re-train, Register, Deploy Unbiased Model](./3-mitigate-bias-train-model2-registry-e2e.ipynb): We mitigate bias, retrain a less biased model, store it in a Model Registry. We then deploy the model to a Amazon SageMaker Hosted Endpoint and run real-time inference via the SageMaker Online Feature Store.
-* [Pipeline Notebook: Create and Run an MLOps Pipeline](./pipeline-e2e.ipynb): We then create a SageMaker Pipeline that ties together everything we have done so far, from outputs from Data Wrangler, Feature Store, Clarify, Model Registry and finally deployment to a SageMaker Hosted Endpoint. [--> Architecture](#nb0-pipeline)
-
-
+* [Notebook 1: Data Exploration](./0-AutoClaimFraudDetection.ipynb): Primeiro exploramos os dados.
+* [Notebook 2: Data Prep and Store](./1-data-prep-e2e.ipynb): Preparamos um conjunto de dados para aprendizado de máquina usando o SageMaker Data Wrangler, criamos e depositamos os conjuntos de dados em um SageMaker Feature Store.
+* [Caderno 3: Treinar, Avaliar Viés, Estabelecer Linhagem, Registrar Modelo](./2-lineage-train-assess-bias-tune-registry-e2e.ipynb): Detectamos possíveis vieses pré-treinamento e pós-treinamento, treine e ajuste um modelo XGBoost usando o Amazon SageMaker, registre o Lineage no Model Registry para que possamos implantá-lo posteriormente.
+* [Notebook 4: Mitigate Bias, Re-train, Register, Deploy Unbias Model](./3-mitigate-bias-train-model2-registry-e2e.ipynb): Nós mitigamos o viés, treinamos novamente um modelo menos tendencioso, armazenamos em um Registro de Modelo. Em seguida, implantamos o modelo em um endpoint hospedado do Amazon SageMaker e executamos a inferência em tempo real por meio da SageMaker Online Feature Store.
+* [Pipeline Notebook: Create and Run an MLOps Pipeline](./pipeline-e2e.ipynb): Em seguida, criamos um SageMaker Pipeline que une tudo o que fizemos até agora, de saídas de Data Wrangler, Feature Store, Clarify, Model Registro e, finalmente, implantação em um endpoint hospedado do SageMaker. [--> Arquitetura](#nb0-pipeline)
 
 <a id ='nb0-workflows'> </a>
 
-## The Exploratory Data Science and ML Ops Workflows
+## Os fluxos de trabalho exploratórios de ciência de dados e operações de ML
 
-### Exploratory Data Science and Scalable MLOps
+### Ciência de dados exploratória e MLOps escaláveis
 
-Note that there are typically two workflows: a manual exploratory workflow and an automated workflow. 
+Observe que normalmente há dois fluxos de trabalho: um fluxo de trabalho exploratório manual e um fluxo de trabalho automatizado.
 
-The *exploratory, manual data science workflow* is where experiments are conducted and various techniques and strategies are tested. 
+O *fluxo de trabalho de ciência de dados manual exploratório* é onde os experimentos são conduzidos e várias técnicas e estratégias são testadas.
 
-After you have established your data prep, transformations, featurizations and training algorithms, testing of various hyperparameters for model tuning, you can start with the automated workflow where you *rely on MLOps or the ML Engineering part of your team* to streamline the process, make it more repeatable and scalable by putting it into an automated pipeline. 
+Depois de estabelecer sua preparação de dados, transformações, funcionalidades e algoritmos de treinamento, teste de vários hiperparâmetros para ajuste de modelo, você pode começar com o fluxo de trabalho automatizado em que *confia em MLOps ou na parte de engenharia de ML de sua equipe* para agilizar o processo, torná-lo mais repetível e escalável, colocando-o em um pipeline automatizado.
 
-![the 2 flows](images/2-flows.png)
-
-
-
-
+![os 2 fluxos](images/2-flows.png)
 <a id ='nb0-ml-lifecycle'></a>
 
-## The ML Life Cycle: Detailed View
+## O ciclo de vida do ML: visão detalhada
 
 ![title](images/ML-Lifecycle-v5.png)
 
-The Red Boxes and Icons represent comparatively newer concepts and tasks that are now deemed important to include and execute, in a production-oriented (versus research-oriented) and scalable ML lifecycle.
+As caixas vermelhas e os ícones representam conceitos e tarefas comparativamente mais novos que agora são considerados importantes para incluir e executar, em um ciclo de vida de ML orientado à produção (versus orientado à pesquisa) e escalável.
 
- These newer lifecycle tasks and their corresponding, supporting AWS Services and features include:
+ Essas tarefas de ciclo de vida mais recentes e seus serviços e recursos correspondentes da AWS de suporte incluem:
 
-1. *Data Wrangling*: AWS Data Wrangler for cleaning, normalizing, transforming and encoding data, as well as joining datasets. The outputs of Data Wrangler are code generated to work with SageMaker Processing, SageMaker Pipelines, SageMaker Feature Store or just a plain old python script with pandas.
-    1. Feature Engineering has always been done, but now with AWS Data Wrangler we can use a GUI based tool to do so and generate code for the next phases of the lifecycle.
-2. *Detect Bias*: Using AWS Clarify, in Data Prep or in Training we can detect pre-training and post-training bias, and eventually at Inference time provide Interpretability / Explainability of the inferences (e.g., which factors were most influential in coming up with the prediction)
-3. *Feature Store (Offline)*: Once we have done all of our feature engineering, the encoding and transformations, we can then standardize features, offline in AWS Feature Store, to be used as input features for training models.
-4. *Artifact Lineage*: Using AWS SageMaker’s Artifact Lineage features we can associate all the artifacts (data, models, parameters, etc.) with a trained model to produce metadata that can be stored in a Model Registry.
-5. *Model Registry*: AWS Model Registry stores the metadata around all artifacts that you have chosen to include in the process of creating your models, along with the model(s) themselves in a Model Registry. Later a human approval can be used to note that the model is good to be put into production. This feeds into the next phase of deploy and monitor.
-6. *Inference and the Online Feature Store*: For real-time inference, we can leverage an online AWS Feature Store we have created to get us single digit millisecond low latency and high throughput for serving our model with new incoming data.
-7. *Pipelines*: Once we have experimented and decided on the various options in the lifecycle (which transforms to apply to our features, imbalance or bias in the data, which algorithms to choose to train with, which hyper-parameters are giving us the best performance metrics, etc.) we can now automate the various tasks across the lifecycle using SageMaker Pipelines. 
-    1. In this notebook, we will show a pipeline that starts with the outputs of AWS Data Wrangler and ends with storing trained models in the Model Registry. 
-    2. Typically, you could have a pipeline for data prep, one for training until model registry (which we are showing in the code associated with this blog), one for inference, and one for re-training using SageMaker Model Monitor to detect model drift and data drift and trigger a re-training using an AWS Lambda function.
-
-
-
+1. *Data Wrangling*: AWS Data Wrangler para limpeza, normalização, transformação e codificação de dados, bem como junção de conjuntos de dados. As saídas do Data Wrangler são código gerado para trabalhar com SageMaker Processing, SageMaker Pipelines, SageMaker Feature Store ou apenas um script python simples e antigo com pandas.
+    1. A engenharia de recursos sempre foi feita, mas agora com o AWS Data Wrangler podemos usar uma ferramenta baseada em GUI para fazer isso e gerar código para as próximas fases do ciclo de vida.
+2. *Detectar viés*: usando o AWS Clarify, no Data Prep ou no treinamento, podemos detectar o viés pré e pós-treinamento e, eventualmente, no momento da inferência, fornecer Interpretabilidade / Explicação das inferências (por exemplo, quais fatores foram mais influentes na chegando com a previsão)
+3. *Feature Store (Offline)*: Depois de ter feito toda a nossa engenharia de recursos, a codificação e as transformações, podemos padronizar os recursos, offline no AWS Feature Store, para serem usados ​​como recursos de entrada para modelos de treinamento.
+4. *Linhagem de artefatos*: Usando os recursos de Linhagem de artefatos do AWS SageMaker, podemos associar todos os artefatos (dados, modelos, parâmetros etc.) a um modelo treinado para produzir metadados que podem ser armazenados em um Registro de modelo.
+5. *Model Registry*: AWS Model Registry armazena os metadados de todos os artefatos que você escolheu incluir no processo de criação de seus modelos, juntamente com os próprios modelos em um Model Registry. Mais tarde, uma aprovação humana pode ser usada para notar que o modelo está bom para ser colocado em produção. Isso alimenta a próxima fase de implantação e monitoramento.
+6. *Inferência e Loja de Recursos Online*: Para inferência em tempo real, podemos aproveitar uma Loja de Recursos da AWS online que criamos para obter latência de um dígito em milissegundos e alta taxa de transferência para atender nosso modelo com novos dados de entrada.
+7. *Pipelines*: Uma vez que experimentamos e decidimos sobre as várias opções no ciclo de vida (que se transforma para aplicar aos nossos recursos, desequilíbrio ou viés nos dados, quais algoritmos escolher para treinar, quais hiperparâmetros estão nos dando as melhores métricas de desempenho etc.), agora podemos automatizar as várias tarefas ao longo do ciclo de vida usando o SageMaker Pipelines.
+    1. Neste notebook, mostraremos um pipeline que começa com as saídas do AWS Data Wrangler e termina com o armazenamento de modelos treinados no Model Registry.
+    2. Normalmente, você pode ter um pipeline para preparação de dados, um para treinamento até o registro do modelo (que estamos mostrando no código associado a este blog), um para inferência e outro para retreinamento usando o SageMaker Model Monitor para detectar o modelo drift e data drift e acionar um novo treinamento usando uma função do AWS Lambda.
