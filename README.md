@@ -1,4 +1,4 @@
-# Arquitete e crie um fluxo de trabalho de ponta a ponta para detecção  de fraudes com os serviços SageMaker.
+# Arquitete e crie um fluxo de trabalho Endtoend para detecção  de fraudes com os serviços SageMaker.
 
 O objetivo deste exemplo Endtoend é demonstrar como preparar, treinar e implantar um modelo que detecta falhas em seguros de automóveis.
 
@@ -61,7 +61,7 @@ Os seguintes serviços [SageMaker](https://sagemaker.readthedocs.io/en/stable/v2
 ## Arquitetura de soluções
 
 A arquitetura geral é mostrada no diagrama abaixo.
-1[de ponta a ponta](./images/ML-Lifecycle-v5.png)
+1[de Endtoend](./images/ML-Lifecycle-v5.png)
 
 Passaremos por 5 etapas do ML e exploraremos a arquitetura da solução do SageMaker. Cada um dos cadernos sequenciais mergulhará profundamente no estágio de ML correspondente.
 
