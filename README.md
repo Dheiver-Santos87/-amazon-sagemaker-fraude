@@ -99,7 +99,7 @@ Nossa solução é dividida nos seguintes estágios do [ML Lifecycle](#nb0-ml-li
 
 <a id ='nb0-workflows'> </a>
 
-## Os fluxos de trabalho exploratórios de ciência de dados e operações de ML
+## Os fluxos de trabalho de ciência de dados e ML
 
 ### Ciência de dados exploratória e MLOps escaláveis
 
