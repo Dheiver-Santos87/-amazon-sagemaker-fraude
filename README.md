@@ -51,7 +51,7 @@ Os seguintes serviços [SageMaker](https://sagemaker.readthedocs.io/en/stable/v2
  1. [SageMaker Clarify](https://aws.amazon.com/sagemaker/clarify/)- [docs](https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-processing-job -run.html)
  1. [Treinamento do SageMaker com algoritmo XGBoost e otimização de hiperparâmetros](https://sagemaker.readthedocs.io/en/stable/frameworks/xgboost/using_xgboost.html)- [docs](https://sagemaker.readthedocs.io/ pt/stable/frameworks/xgboost/index.html)
  1. [SageMaker Model Registry](https://docs.aws.amazon.com/sagemaker/latest/dg/model-registry.html)- [docs](https://docs.aws.amazon.com/sagemaker /latest/dg/model-registry-deploy.html#model-registry-deploy-api)
- 1. [Pontos de extremidade hospedados do SageMaker]()- [preditores - docs](https://sagemaker.readthedocs.io/en/stable/api/inference/predictors.html)
+ 1. [Endpoints hospedados do SageMaker]()- [preditores - docs](https://sagemaker.readthedocs.io/en/stable/api/inference/predictors.html)
  1. [SageMaker Pipelines]()- [docs](https://sagemaker.readthedocs.io/en/stable/workflows/pipelines/index.html)
  
 ![Componentes da solução](images/solution-components-e2e.png)
@@ -94,8 +94,8 @@ Nossa solução é dividida nos seguintes estágios do [ML Lifecycle](#nb0-ml-li
 * [Notebook 1: Data Exploration](./0-AutoClaimFraudDetection.ipynb): Primeiro exploramos os dados.
 * [Notebook 2: Data Prep and Store](./1-data-prep-e2e.ipynb): Preparamos um conjunto de dados para aprendizado de máquina usando o SageMaker Data Wrangler, criamos e depositamos os conjuntos de dados em um SageMaker Feature Store.
 * [Notbook 3: Treinar, Avaliar Viés, Estabelecer Linhagem, Registrar Modelo](./2-lineage-train-assess-bias-tune-registry-e2e.ipynb): Detectamos possíveis vieses pré-treinamento e pós-treinamento, treine e ajuste um modelo XGBoost usando o Amazon SageMaker, registre o Lineage no Model Registry para que possamos implantá-lo posteriormente.
-* [Notebook 4: Mitigate Bias, Re-train, Register, Deploy Unbias Model](./3-mitigate-bias-train-model2-registry-e2e.ipynb): Nós mitigamos o viés, treinamos novamente um modelo menos tendencioso, armazenamos em um Registro de Modelo. Em seguida, implantamos o modelo em um endpoint hospedado do Amazon SageMaker e executamos a inferência em tempo real por meio da SageMaker Online Feature Store.
-* [Pipeline Notebook: Create and Run an MLOps Pipeline](./pipeline-e2e.ipynb): Em seguida, criamos um SageMaker Pipeline que une tudo o que fizemos até agora, de saídas de Data Wrangler, Feature Store, Clarify, Model Registro e, finalmente, implantação em um endpoint hospedado do SageMaker. [--> Arquitetura](#nb0-pipeline)
+* [Notebook 4: Mitigar o viés, retreine, registre, implante o modelo](./3-mitigate-bias-train-model2-registry-e2e.ipynb): Nós mitigamos o viés, treinamos novamente um modelo menos tendencioso, armazenamos em um Registro de Modelo. Em seguida, implantamos o modelo em um endpoint hospedado do Amazon SageMaker e executamos a inferência em tempo real por meio da SageMaker Online Feature Store.
+* [Pipeline Notebook: Criar e executar um pipeline de MLOps](./pipeline-e2e.ipynb): Em seguida, criamos um SageMaker Pipeline que une tudo o que fizemos até agora, de saídas de Data Wrangler, Feature Store, Clarify, Model Registro e, finalmente, implantação em um endpoint hospedado do SageMaker. [--> Arquitetura](#nb0-pipeline)
 
 <a id ='nb0-workflows'> </a>
 
