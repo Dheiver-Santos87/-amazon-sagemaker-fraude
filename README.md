@@ -1,6 +1,6 @@
-# Arquitete e crie um fluxo de trabalho Endtoend para detecção de fraudes com os serviços SageMaker.
+# Arquitete e crie um fluxo de trabalho End-to-end para detecção de fraudes com os serviços SageMaker.
 
-O objetivo deste exemplo Endtoend é demonstrar como preparar, treinar e implantar um modelo que detecta fraudes em seguros de automóveis.
+O objetivo deste exemplo End-to-end é demonstrar como preparar, treinar e implantar um modelo que detecta fraudes em seguros de automóveis.
 
 ## Conteúdo
 1. [Problema de negócios](#business-problem)
@@ -79,7 +79,7 @@ Essa é a arquitetura para implantação de modelo.
 
 ![Arquitetura da solução](images/e2e-3-pipeline-v3b.png)
 
-### [Pipeline Notebook](./pipeline-e2e.ipynb): End-to-End Pipeline - MLOps Pipeline para executar um fluxo de trabalho automatizado de ponta a ponta com todas as decisões de design feitas durante as etapas manuais/exploratórias em notebooks anteriores .
+### [Pipeline Notebook](./pipeline-e2e.ipynb): End-to-End Pipeline - MLOps Pipeline para executar um fluxo de trabalho automatizado End-to-end com todas as decisões de design feitas durante as etapas manuais/exploratórias em notebooks anteriores .
 
 ![Arquitetura de solução de pipelines](images/e2e-5-pipeline-v3b.png)
 
@@ -120,7 +120,7 @@ As caixas vermelhas e os ícones representam conceitos e tarefas comparativament
 
 1. *Data Wrangling*: AWS Data Wrangler para limpeza, normalização, transformação e codificação de dados, bem como junção de conjuntos de dados. As saídas do Data Wrangler são código gerado para trabalhar com SageMaker Processing, SageMaker Pipelines, SageMaker Feature Store ou apenas um script python simples e antigo com pandas.
     1. A engenharia de recursos sempre foi feita, mas agora com o AWS Data Wrangler podemos usar uma ferramenta baseada em GUI para fazer isso e gerar código para as próximas fases do ciclo de vida.
-2. *Detectar viés*: usando o AWS Clarify, no Data Prep ou no treinamento, podemos detectar o viés pré e pós-treinamento e, eventualmente, no momento da inferência, fornecer Interpretabilidade / Explicação das inferências (por exemplo, quais fatores foram mais influentes na chegando com a previsão)
+2. *Detectar viés*: usando o AWS Clarify, no Data Prep ou no treinamento, podemos detectar o viés pré e pós-treinamento e, eventualmente, no momento da inferência, fornecer Interpretabilidade / Explicação das inferências (por exemplo, quais fatores foram mais influentes mo final da previsão)
 3. *Feature Store (Offline)*: Depois de ter feito toda a nossa engenharia de recursos, a codificação e as transformações, podemos padronizar os recursos, offline no AWS Feature Store, para serem usados ​​como recursos de entrada para modelos de treinamento.
 4. *Linhagem de artefatos*: Usando os recursos de Linhagem de artefatos do AWS SageMaker, podemos associar todos os artefatos (dados, modelos, parâmetros etc.) a um modelo treinado para produzir metadados que podem ser armazenados em um Registro de modelo.
 5. *Model Registry*: AWS Model Registry armazena os metadados de todos os artefatos que você escolheu incluir no processo de criação de seus modelos, juntamente com os próprios modelos em um Model Registry. Mais tarde, uma aprovação humana pode ser usada para notar que o modelo está bom para ser colocado em produção. Isso alimenta a próxima fase de implantação e monitoramento.
