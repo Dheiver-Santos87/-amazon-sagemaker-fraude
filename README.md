@@ -1,6 +1,6 @@
-# Arquitete e crie um fluxo de trabalho Endtoend para detecção  de fraudes com os serviços SageMaker.
+# Arquitete e crie um fluxo de trabalho Endtoend para detecção de fraudes com os serviços SageMaker.
 
-O objetivo deste exemplo Endtoend é demonstrar como preparar, treinar e implantar um modelo que detecta falhas em seguros de automóveis.
+O objetivo deste exemplo Endtoend é demonstrar como preparar, treinar e implantar um modelo que detecta fraudes em seguros de automóveis.
 
 ## Conteúdo
 1. [Problema de negócios](#business-problem)
@@ -24,10 +24,10 @@ mais precisamente, abordamos o caso de uso: <i> "qual é a probabilidade de uma 
 
 Ao revisar os notebooks e as [arquiteturas](#nb0-architecture) apresentadas em cada estágio do ciclo de vida de ML, você verá como pode aproveitar os serviços e recursos do SageMaker para aprimorar sua eficácia como cientista de dados e como e como engenheiro de operações de ML.
 
-Em seguida, realizamos a exploração de dados nos conjuntos de dados gerados sinteticamente em relação à Clientes e Reclamações.
+Em seguida, realizamos a análise exploratória nos conjuntos de dados gerados sinteticamente em relação à Clientes e Reclamações.
 
 Em seguida, fornecemos uma visão geral da solução técnica examinando os [Componentes da solução](#nb0-components) e a [Arquitetura da solução](#nb0-architecture).
-Somos motivados pela necessidade de realizar novas tarefas em ML examinando uma [visão detalhada do Ciclo de Vida de Aprendizado de Máquina](#nb0-ml-lifecycle), reconhecendo à [separação da ciência de dados exploratória e operacionalizando de um fluxo de trabalho de ML](#nb0 -fluxos de trabalho).
+Somos motivados pela necessidade de realizar novas tarefas em ML examinando uma [visão detalhada do Ciclo de Vida de Aprendizado de Máquina](#nb0-ml-lifecycle), reconhecendo à [separação da análise exploratória e operacionalizando de um fluxo de trabalho de ML](#nb0 -fluxos de trabalho).
 
 ### Reclamações de seguro automóvel: conjuntos de dados e domínio do problema
 
@@ -37,7 +37,7 @@ As entradas para construir nosso modelo e fluxo de trabalho são duas tabelas de
 
 ## Solução técnica
 
-Nesta introdução, você examinará a arquitetura técnica e os componentes da solução para criar uma solução para prever fraudes em acidentes  e implantá-la usando o SageMaker para previsões em tempo real. Embora um modelo implantado seja o produto final desta série de notebooks, o objetivo deste guia é orientá-lo em todos os estágios detalhados do [ciclo de vida de aprendizado de máquina (ML)](#ml-lifecycle) e mostrar quais serviços do SageMaker e os recursos estão lá para apoiar suas atividades em cada estágio.
+Nesta introdução, você examinará a arquitetura técnica e os componentes da solução para criar uma solução para prever fraudes em acidentes e implantá-la usando o SageMaker para previsões em tempo real. Embora um modelo implantado seja o produto final desta série de notebooks, o objetivo deste guia é orientá-lo em todos os estágios detalhados do [ciclo de vida de aprendizado de máquina (ML)](#ml-lifecycle) e mostrar quais serviços do SageMaker e os recursos estão lá para apoiar suas atividades em cada estágio.
 
 <a id ='nb0-components'> </a>
 
@@ -71,7 +71,7 @@ Passaremos por 5 etapas do ML e exploraremos a arquitetura da solução do SageM
 
 ![Arquitetura da solução](images/e2e-1-pipeline-v3b.png)
 
-### [Notebook 3](./2-lineage-train-assess-bias-tune-registry-e2e.ipynb) e [Notebook 4](./3-mitigate-bias-train-model2-registry-e2e. ipynb): Treinar, Ajustar, Verificar Preconceito e Pós-Treinamento, Mitigar Viés, Retreinar, Depositar e Implantar o Melhor Modelo no Registro de Modelos do SageMaker
+### [Notebook 3](./2-lineage-train-assess-bias-tune-registry-e2e.ipynb) e [Notebook 4](./3-mitigate-bias-train-model2-registry-e2e. ipynb): Treinar, Ajustar, Verificar Preconceito e Pós-Treinamento, Mitigar Viés, Retreinar, Depositar e Implantar o Melhor Modelo no Registro de Modelos do SageMaker.
 
 ![Arquitetura da solução](images/e2e-2-pipeline-v3b.png)
 
