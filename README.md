@@ -71,7 +71,7 @@ Passaremos por 5 etapas do ML e exploraremos a arquitetura da solução do SageM
 
 ![Arquitetura da solução](images/e2e-1-pipeline-v3b.png)
 
-### [Notebook 3](./2-lineage-train-assess-bias-tune-registry-e2e.ipynb) e [Notebook 4](./3-mitigate-bias-train-model2-registry-e2e. ipynb): Treinar, Ajustar, Verificar Preconceito e Pós-Treinamento, Mitigar Viés, Retreinar, Depositar e Implantar o Melhor Modelo no Registro de Modelos do SageMaker.
+### [Notebook 3](./2-lineage-train-assess-bias-tune-registry-e2e.ipynb) e [Notebook 4](./3-mitigate-bias-train-model2-registry-e2e. ipynb): Treinar, Ajustar, Verificar  e Pós-Treinamento, Mitigar Viés, Retreinar, Depositar e Implantar o Melhor Modelo no Registro de Modelos do SageMaker.
 
 ![Arquitetura da solução](images/e2e-2-pipeline-v3b.png)
 
