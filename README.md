@@ -112,9 +112,9 @@ Depois de estabelecer sua preparação de dados, transformações, funcionalidad
 ![os 2 fluxos](images/2-flows.png)
 <a id ='nb0-ml-lifecycle'></a>
 
-## O ciclo de vida do ML: visão detalhada
+## O ciclo de vida do ML: 
 
-![title](images/ML-Lifecycle-v5.png)
+## ![title](images/ML-Lifecycle-v5.png)
 
 As caixas vermelhas e os ícones representam conceitos e tarefas comparativamente mais novos que agora são considerados importantes para incluir e executar, em um ciclo de vida de ML orientado à produção (versus orientado à pesquisa) e escalável.
 
