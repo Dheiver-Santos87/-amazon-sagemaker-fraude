@@ -61,7 +61,7 @@ Os seguintes serviços [SageMaker](https://sagemaker.readthedocs.io/en/stable/v2
 ## Arquitetura de soluções
 
 A arquitetura geral é mostrada no diagrama abaixo.
-1[de Endtoend](./images/ML-Lifecycle-v5.png)
+1[de End-to-end](./images/ML-Lifecycle-v5.png)
 
 Passaremos por 5 etapas do ML e exploraremos a arquitetura da solução do SageMaker. Cada um dos Notbooks sequenciais mergulhará profundamente no estágio de ML correspondente.
 
