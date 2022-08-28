@@ -114,8 +114,6 @@ Depois de estabelecer sua preparação de dados, transformações, funcionalidad
 
 ## O ciclo de vida do ML: 
 
-## ![title](images/ML-Lifecycle-v5.png)
-
 As caixas vermelhas e os ícones representam conceitos e tarefas comparativamente mais novos que agora são considerados importantes para incluir e executar, em um ciclo de vida de ML orientado à produção (versus orientado à pesquisa) e escalável.
 
  Essas tarefas de ciclo de vida mais recentes e seus serviços e recursos correspondentes da AWS de suporte incluem:
