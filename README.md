@@ -1,4 +1,4 @@
-![Jornada do Zero ao Deploy](images/Dr Dheiver Santos.jpg)
+![Jornada do Zero ao Deploy](images/Santos.png)
 
 # Arquitete e crie um fluxo de trabalho End-to-end para detecção de fraudes com os serviços SageMaker.
 
