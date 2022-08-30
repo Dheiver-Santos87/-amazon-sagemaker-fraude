@@ -1,3 +1,5 @@
+![Jornada do Zero ao Deploy](images/solution-aws.jpg)
+
 # Arquitete e crie um fluxo de trabalho End-to-end para detecção de fraudes com os serviços SageMaker.
 
 O objetivo deste exemplo End-to-end é demonstrar como preparar, treinar e implantar um modelo que detecta fraudes em seguros de automóveis.
